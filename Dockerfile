@@ -18,7 +18,7 @@ RUN apt update && apt install -y ngrok
 RUN ngrok --version
 
 # Установка токена ngrok через переменную окружения
-ENV NGROK_AUTH_TOKEN=${NGROK_AUTH_TOKEN}
+ENV NGROK_AUTH_TOKEN=2ufYgdPC9Fjcr5LoGC1hHmhycNR_5S9ySqUHff6UCftJMQEKC
 
 # Установка токена ngrok с использованием переменной окружения
 RUN ngrok authtoken ${NGROK_AUTH_TOKEN}
