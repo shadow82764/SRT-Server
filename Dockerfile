@@ -1,7 +1,10 @@
 FROM ubuntu:latest
 
-# Установка необходимых пакетов
-RUN apt update && apt install -y libsrt-openssl-dev ffmpeg
+# Обновление пакетов и установка SRT
+RUN apt update && apt install -y libsrt-openssl-dev ffmpeg srt-tools
 
-# Запуск SRT-сервера
-CMD ["srt-live-transmit", "srt://:8888?mode=listener", "udp://127.0.0.1:9999"]
+# Открываем порт для SRT
+EXPOSE 8888
+
+# Запускаем SRT-сервер в режиме listener
+CMD ["srt-live-transmit", "srt://0.0.0.0:8888?mode=listener", "null"]
