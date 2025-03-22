@@ -18,8 +18,8 @@ RUN apt update && apt install -y ngrok
 RUN ngrok --version
 
 # Установка токена ngrok (для передачи токена через Docker)
-ARG NGROK_AUTH_TOKEN
-RUN echo "Ngrok auth token: 2ufYgdPC9Fjcr5LoGC1hHmhycNR_5S9ySqUHff6UCftJMQEKC"
+ARG NGROK_AUTH_TOKEN 2ufYgdPC9Fjcr5LoGC1hHmhycNR_5S9ySqUHff6UCftJMQEKC
+RUN echo "Ngrok auth token: ${NGROK_AUTH_TOKEN}"
 
 # Автоматическая аутентификация с ngrok
 RUN ngrok authtoken ${NGROK_AUTH_TOKEN}
