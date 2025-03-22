@@ -9,17 +9,24 @@ RUN apt update && apt install -y \
     unzip \
     jq
 
-# Установка Ngrok
+# Установка ngrok
 RUN curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | tee /etc/apt/trusted.gpg.d/ngrok.asc > /dev/null
 RUN echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | tee /etc/apt/sources.list.d/ngrok.list
 RUN apt update && apt install -y ngrok
 
-# Установка токена Ngrok (Вставь свой токен сюда)
+# Проверка версии ngrok
+RUN ngrok --version
+
+# Установка токена ngrok (для передачи токена через Docker)
 ARG NGROK_AUTH_TOKEN
-RUN ngrok authtoken 2ufYgdPC9Fjcr5LoGC1hHmhycNR_5S9ySqUHff6UCftJMQEKC
+RUN echo "Ngrok auth token: 2ufYgdPC9Fjcr5LoGC1hHmhycNR_5S9ySqUHff6UCftJMQEKC"
+
+# Автоматическая аутентификация с ngrok
+RUN ngrok authtoken ${NGROK_AUTH_TOKEN}
 
 # Открытие порта
 EXPOSE 8888
 
-# Запуск Cloudflare Tunnel + SRT
-CMD cloudflared tunnel --no-autoupdate run & srt-live-transmit srt://0.0.0.0:8888?mode=listener udp://127.0.0.1:9999
+# Запуск ngrok и srt
+CMD echo "Starting ngrok tunnel..." && ngrok tcp 8888 & \
+    echo "Starting SRT live transmission..." && srt-live-transmit srt://0.0.0.0:8888?mode=listener udp://127.0.0.1:9999
